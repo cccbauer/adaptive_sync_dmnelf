@@ -27,32 +27,28 @@ def fetch_models():
     local_dir = config.LOCAL_RESULTS / "rl_agents"
     local_dir.mkdir(exist_ok=True, parents=True)
     
-    # Download all .pkl files from models directory
-    cluster_models = config.CLUSTER_MODELS
+    # Download specific model files directly
+    model_files = [
+        'qlearning_feedback.pkl',
+        'qlearning_shortrest.pkl', 
+        'qlearning_rest.pkl',
+        'results_feedback.pkl',
+        'results_shortrest.pkl',
+        'results_rest.pkl'
+    ]
     
-    # List available models
-    cmd = f"ls {cluster_models}/*.pkl 2>/dev/null || echo 'No models found'"
-    result = subprocess.run(
-        config.ssh_command(cmd),
-        shell=True,
-        capture_output=True,
-        text=True
-    )
-    
-    if "No models found" in result.stdout:
-        print("  No models found on cluster")
-        return
-    
-    model_files = [f.strip() for f in result.stdout.strip().split('\n')]
-    
-    for model_file in model_files:
-        filename = Path(model_file).name
+    for filename in model_files:
+        cluster_file = config.CLUSTER_MODELS / filename
         local_file = local_dir / filename
         
-        cmd = config.scp_from_cluster(model_file, local_file)
-        subprocess.run(cmd, shell=True, check=True)
-        print(f"  ✓ Downloaded: {filename}")
-
+        cmd = config.scp_from_cluster(cluster_file, local_file)
+        result = subprocess.run(cmd, shell=True, capture_output=True)
+        
+        if result.returncode == 0:
+            print(f"  ✓ Downloaded: {filename}")
+        else:
+            print(f"  ⚠ Not found: {filename}")
+            
 def fetch_training_curves():
     """Download training results and plots"""
     print("\nFetching training curves...")
@@ -70,6 +66,31 @@ def fetch_training_curves():
         print("  ✓ Downloaded: training_results.pkl")
     except subprocess.CalledProcessError:
         print("  ⚠ training_results.pkl not found")
+
+def fetch_validation_results():
+    """Download validation results"""
+    print("\nFetching validation results...")
+    
+    local_dir = config.LOCAL_RESULTS / "validation"
+    local_dir.mkdir(exist_ok=True, parents=True)
+    
+    # Fetch specific files directly
+    subjects = ["sub-dmnelf001"]  # Expand later
+    conditions = ["feedback", "shortrest", "rest"]
+    
+    for subj in subjects:
+        for cond in conditions:
+            filename = f"{subj}_{cond}_validation.pkl"
+            cluster_file = config.CLUSTER_RESULTS / "validation" / filename
+            local_file = local_dir / filename
+            
+            cmd = config.scp_from_cluster(cluster_file, local_file)
+            result = subprocess.run(cmd, shell=True, capture_output=True)
+            
+            if result.returncode == 0:
+                print(f"  ✓ Downloaded: {filename}")
+            else:
+                print(f"  ⚠ Not found: {filename}")
 
 def fetch_validation_plots():
     """Download validation plots comparing real vs simulated"""
@@ -147,7 +168,7 @@ def fetch_all():
     """Download everything"""
     fetch_models()
     fetch_training_curves()
-    fetch_validation_plots()
+    fetch_validation_results()  # Changed from fetch_validation_plots
     fetch_logs()
 
 def main():

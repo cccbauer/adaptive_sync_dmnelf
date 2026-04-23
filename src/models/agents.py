@@ -96,17 +96,12 @@ class QLearningAgent:
         """
         Compute reward signal.
         
-        r = -|R_target - R(t)| - E(t)
-        
-        Args:
-            R: Current synchronization
-            E: Current energy cost
-        
-        Returns:
-            reward: Scalar reward signal
+        r = -sync_weight*|R_target - R(t)| - energy_weight*E(t)
         """
         sync_error = abs(self.params.r_target - R)
-        reward = -sync_error - E
+        sync_weight = getattr(self.params, 'sync_weight', 1000.0)
+        energy_weight = getattr(self.params, 'energy_weight', 1.0)
+        reward = -sync_weight * sync_error - energy_weight * E
         
         return reward
     

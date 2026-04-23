@@ -165,7 +165,11 @@ class EnergyFunction:
         n_steps = len(sync_trajectory)
         
         # Compute dR/dt using finite differences
-        dR_dt = np.gradient(sync_trajectory, dt)
+        # Handle single-element case
+        if n_steps == 1:
+            dR_dt = np.array([0.0])
+        else:
+            dR_dt = np.gradient(sync_trajectory, dt)
         
         # Use simulated EEG power if not provided
         if eeg_power is None:
