@@ -1,4 +1,13 @@
-# Quick Start Guide
+# HOW TO — Adaptive Neural Synchronization
+## DMNELF RL-Based Neurofeedback Control
+
+**Author:** Clemens C.C. Bauer (cccbauer)  
+**Lab:** EPIC Brain Lab, Northeastern University  
+**Cluster:** Explorer (explorer.northeastern.edu)  
+
+---
+
+## Quick Start Guide
 
 ## Overview
 
