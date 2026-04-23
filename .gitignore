@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Data (large files)
+data/
+*.nii
+*.nii.gz
+*.fif
+*.npy
+*.h5
+
+# Model outputs
+*.pkl
+*.pth
+trained_*/
+
+# Figures
+*.png
+*.pdf
+*.svg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+*.env
+
+# Temporary
+tmp/
+temp/

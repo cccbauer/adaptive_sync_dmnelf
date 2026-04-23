@@ -1,0 +1,39 @@
+name: adaptive_sync
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Core scientific Python
+  - python=3.11
+  - numpy=1.26
+  - scipy=1.11
+  - pandas=2.1
+  
+  # Neuroimaging
+  - nibabel=5.2
+  - mne=1.6
+  
+  # Machine learning
+  - scikit-learn=1.4
+  
+  # Visualization
+  - matplotlib=3.8
+  - seaborn=0.13
+  
+  # Utilities
+  - tqdm
+  - pyyaml
+  
+  # Development
+  - jupyter
+  - ipython
+  - black
+  - pytest
+  
+  # HPC/parallel
+  - joblib
+  
+  # Pip packages
+  - pip
+  - pip:
+    - nilearn>=0.10.2
