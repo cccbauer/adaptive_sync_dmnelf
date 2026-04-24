@@ -46,6 +46,12 @@ SLURM_CPUS = 4
 SLURM_MEM = "16G"
 
 # ============================================================================
+# ALIASES FOR COMPATIBILITY
+# ============================================================================
+RESULTS_DIR = LOCAL_RESULTS  # For scripts that use RESULTS_DIR
+BASE_DIR = LOCAL_BASE
+
+# ============================================================================
 # SUBJECTS AND SESSIONS
 # ============================================================================
 SUBJECTS = [
@@ -230,7 +236,7 @@ def ssh_command(cmd):
 
 def scp_to_cluster(local_file, cluster_file):
     """Build SCP upload command."""
-    return f"scp {local_file} {CLUSTER_USER}@{CLUSTER_HOST}:{cluster_file}"
+    return f'scp "{local_file}" {CLUSTER_USER}@{CLUSTER_HOST}:"{cluster_file}"'
 
 def scp_from_cluster(cluster_file, local_file):
     """Build SCP download command."""
